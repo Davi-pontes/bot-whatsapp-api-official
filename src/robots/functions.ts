@@ -1,9 +1,9 @@
 import axios from 'axios'
-
+import 'dotenv/config'
 const axiosConfig = {
     headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.WA_TOKEN}`
+        'Authorization': `Bearer EAANLjmIPRHABO3eaxzCvXGSTWipx9QNJrlCZAs9M3AviiYzD9QMtPTyNVwiq7QaYM2m50TSlGGIGFudR6rsx65jZCRbYTVOU72Vkxw5X1L7q9C19xWoypSshRrUVLM8eRepWz9JxHUtcJhWKZCgN2h1mSvhxbeKljMdA5uBAnEbDZB3A9bZA3JZAND8cpLBgVVjGUkzoLJGtwTG6rokmHzmA6NIn8ZD`
     }
 }
 
@@ -18,7 +18,11 @@ function toTitleCase(str:string) {
 
 const sendMessage = async (number:string, message:string, wmaid?:string) => {
     if (wmaid) {
-        axios.post(`https://graph.facebook.com/v14.0/${process.env.WAID}/messages`, {
+        console.log(process.env.WAID);
+        console.log(number);
+        console.log(wmaid);
+        
+        axios.post(`https://graph.facebook.com/v21.0/${process.env.WAID}/messages`, {
             messaging_product: 'whatsapp',
             context: {
                 message_id: wmaid
@@ -50,7 +54,11 @@ const sendMessage = async (number:string, message:string, wmaid?:string) => {
             return true
         })
         .catch(function (error) {
-            console.log(error);
+            if (error.response && error.response.data) {
+                console.log(error.response.data);  // Aqui você está acessando apenas o "data"
+            } else {
+                console.log(error.message);  // Caso não haja uma resposta, imprime a mensagem de erro
+            }
         });
     }
 }
